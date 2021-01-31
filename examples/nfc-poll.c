@@ -117,13 +117,13 @@ main(int argc, const char *argv[])
 
   printf("AZZAM");
 
-  nfc_init(&context);
-  if (context == NULL) {
-    ERR("Unable to init libnfc (malloc)");
-    exit(EXIT_FAILURE);
-  }
-
   while(true){
+    nfc_init(&context);
+    if (context == NULL) {
+      ERR("Unable to init libnfc (malloc)");
+      exit(EXIT_FAILURE);
+    }
+
     pnd = nfc_open(context, NULL);
 
     if (pnd == NULL) {
@@ -160,7 +160,7 @@ main(int argc, const char *argv[])
     }
 
     nfc_close(pnd);
+    nfc_exit(context);
   }
-  nfc_exit(context);
   exit(EXIT_SUCCESS);
 }
