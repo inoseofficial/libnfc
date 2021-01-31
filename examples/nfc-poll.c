@@ -90,15 +90,15 @@ main(int argc, const char *argv[])
   // Display libnfc version
   const char *acLibnfcVersion = nfc_version();
 
-  printf("%s uses libnfc %s\n", argv[0], acLibnfcVersion);
-  if (argc != 1) {
-    if ((argc == 2) && (0 == strcmp("-v", argv[1]))) {
-      verbose = true;
-    } else {
-      print_usage(argv[0]);
-      exit(EXIT_FAILURE);
-    }
-  }
+  // printf("%s uses libnfc %s\n", argv[0], acLibnfcVersion);
+  // if (argc != 1) {
+  //   if ((argc == 2) && (0 == strcmp("-v", argv[1]))) {
+  //     verbose = true;
+  //   } else {
+  //     print_usage(argv[0]);
+  //     exit(EXIT_FAILURE);
+  //   }
+  // }
 
   const uint8_t uiPollNr = 20;
   const uint8_t uiPeriod = 2;
@@ -115,17 +115,17 @@ main(int argc, const char *argv[])
   nfc_target nt;
   int res = 0;
 
-  printf("AZZAM");
+  // printf("AZZAM");
 
   nfc_init(&context);
   if (context == NULL) {
-    ERR("Unable to init libnfc (malloc)");
+    // ERR("Unable to init libnfc (malloc)");
     exit(EXIT_FAILURE);
   }
 
   pnd = nfc_open(context, NULL);
   if (pnd == NULL) {
-    ERR("%s", "Unable to open NFC device.");
+    // ERR("%s", "Unable to open NFC device.");
     nfc_exit(context);
     exit(EXIT_FAILURE);
   }
@@ -139,8 +139,8 @@ main(int argc, const char *argv[])
       exit(EXIT_FAILURE);
     }
 
-    printf("NFC reader: %s opened\n", nfc_device_get_name(pnd));
-    printf("NFC device will poll during %ld ms (%u pollings of %lu ms for %" PRIdPTR " modulations)\n", (unsigned long) uiPollNr * szModulations * uiPeriod * 150, uiPollNr, (unsigned long) uiPeriod * 150, szModulations);
+    // printf("NFC reader: %s opened\n", nfc_device_get_name(pnd));
+    // printf("NFC device will poll during %ld ms (%u pollings of %lu ms for %" PRIdPTR " modulations)\n", (unsigned long) uiPollNr * szModulations * uiPeriod * 150, uiPollNr, (unsigned long) uiPeriod * 150, szModulations);
     if ((res = nfc_initiator_poll_target(pnd, nmModulations, szModulations, uiPollNr, uiPeriod, &nt))  < 0) {
       continue;
       // nfc_perror(pnd, "nfc_initiator_poll_target");
@@ -151,15 +151,16 @@ main(int argc, const char *argv[])
 
     if (res > 0) {
       print_nfc_target(&nt, verbose);
-      printf("Waiting for card removing...");
-      fflush(stdout);
+      // printf("Waiting for card removing...");
       while (0 == nfc_initiator_target_is_present(pnd, NULL)) {}
-      nfc_perror(pnd, "nfc_initiator_target_is_present");
-      printf("done.\n");
+      // nfc_perror(pnd, "nfc_initiator_target_is_present");
+      // printf("done.\n");
     } else {
-      printf("No target found.\n");
+      // printf("No target found.\n");
     }
 
+    printf("DONE");
+    fflush(stdout);
   }
 
   nfc_close(pnd);
