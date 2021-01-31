@@ -150,6 +150,7 @@ main(int argc, const char *argv[])
     }
 
     if (res > 0) {
+      nt.nm.nmt = NMT_ISO14443B2SR;
       print_nfc_target(&nt, true);
       printf("Waiting for card removing...");
       fflush(stdout);
