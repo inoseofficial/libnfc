@@ -139,14 +139,32 @@ main(int argc, const char *argv[])
       exit(EXIT_FAILURE);
     }
 
-    printf("NFC reader: %s opened\n", nfc_device_get_name(pnd));
-    printf("NFC device will poll during %ld ms (%u pollings of %lu ms for %" PRIdPTR " modulations)\n", (unsigned long) uiPollNr * szModulations * uiPeriod * 150, uiPollNr, (unsigned long) uiPeriod * 150, szModulations);
-    if ((res = nfc_initiator_poll_target(pnd, nmModulations, szModulations, uiPollNr, uiPeriod, &nt))  < 0) {
+    // printf("NFC reader: %s opened\n", nfc_device_get_name(pnd));
+    // printf("NFC device will poll during %ld ms (%u pollings of %lu ms for %" PRIdPTR " modulations)\n", (unsigned long) uiPollNr * szModulations * uiPeriod * 150, uiPollNr, (unsigned long) uiPeriod * 150, szModulations);
+    // if ((res = nfc_initiator_poll_target(pnd, nmModulations, szModulations, uiPollNr, uiPeriod, &nt))  < 0) {
+    //   continue;
+    //   // nfc_perror(pnd, "nfc_initiator_poll_target");
+    //   // nfc_close(pnd);
+    //   // nfc_exit(context);
+    //   // exit(EXIT_FAILURE);
+    // }
+
+    // List ISO14443B iClass targets
+    nfc_target ant[16];
+    nfc_modulation nm;
+    nm.nmt = NMT_ISO14443A;
+    nm.nbr = NBR_106;
+    if ((res = nfc_initiator_list_passive_targets(pnd, nm, ant, 16)) >= 0) {
+      int n;
+      if (verbose || (res > 0)) {
+        printf("%d ISO14443B iClass passive target(s) found%s\n", res, (res == 0) ? ".\n" : ":");
+      }
+      for (n = 0; n < res; n++) {
+        print_nfc_target(&ant[n], verbose);
+        printf("\n");
+      }
+    } else {
       continue;
-      // nfc_perror(pnd, "nfc_initiator_poll_target");
-      // nfc_close(pnd);
-      // nfc_exit(context);
-      // exit(EXIT_FAILURE);
     }
 
     if (res > 0) {
