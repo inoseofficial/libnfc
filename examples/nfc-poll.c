@@ -115,6 +115,8 @@ main(int argc, const char *argv[])
   nfc_target nt;
   int res = 0;
 
+  printf("AZZAM");
+
   nfc_init(&context);
   if (context == NULL) {
     ERR("Unable to init libnfc (malloc)");
