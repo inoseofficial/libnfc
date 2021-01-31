@@ -142,10 +142,11 @@ main(int argc, const char *argv[])
     printf("NFC reader: %s opened\n", nfc_device_get_name(pnd));
     printf("NFC device will poll during %ld ms (%u pollings of %lu ms for %" PRIdPTR " modulations)\n", (unsigned long) uiPollNr * szModulations * uiPeriod * 150, uiPollNr, (unsigned long) uiPeriod * 150, szModulations);
     if ((res = nfc_initiator_poll_target(pnd, nmModulations, szModulations, uiPollNr, uiPeriod, &nt))  < 0) {
-      nfc_perror(pnd, "nfc_initiator_poll_target");
-      nfc_close(pnd);
-      nfc_exit(context);
-      exit(EXIT_FAILURE);
+      continue;
+      // nfc_perror(pnd, "nfc_initiator_poll_target");
+      // nfc_close(pnd);
+      // nfc_exit(context);
+      // exit(EXIT_FAILURE);
     }
 
     if (res > 0) {
