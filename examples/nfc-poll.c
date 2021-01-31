@@ -117,20 +117,20 @@ main(int argc, const char *argv[])
 
   printf("AZZAM");
 
+  nfc_init(&context);
+  if (context == NULL) {
+    ERR("Unable to init libnfc (malloc)");
+    exit(EXIT_FAILURE);
+  }
+
+  pnd = nfc_open(context, NULL);
+  if (pnd == NULL) {
+    ERR("%s", "Unable to open NFC device.");
+    nfc_exit(context);
+    exit(EXIT_FAILURE);
+  }
+
   while(true){
-    nfc_init(&context);
-    if (context == NULL) {
-      ERR("Unable to init libnfc (malloc)");
-      exit(EXIT_FAILURE);
-    }
-
-    pnd = nfc_open(context, NULL);
-
-    if (pnd == NULL) {
-      ERR("%s", "Unable to open NFC device.");
-      nfc_exit(context);
-      exit(EXIT_FAILURE);
-    }
 
     if (nfc_initiator_init(pnd) < 0) {
       nfc_perror(pnd, "nfc_initiator_init");
@@ -159,8 +159,9 @@ main(int argc, const char *argv[])
       printf("No target found.\n");
     }
 
-    nfc_close(pnd);
-    nfc_exit(context);
   }
+
+  nfc_close(pnd);
+  nfc_exit(context);
   exit(EXIT_SUCCESS);
 }
