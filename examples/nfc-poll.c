@@ -160,7 +160,7 @@ main(int argc, const char *argv[])
     }
 
     nfc_close(pnd);
-    nfc_exit(context);
   }
+  nfc_exit(context);
   exit(EXIT_SUCCESS);
 }
